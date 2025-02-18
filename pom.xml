@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.vaadin.addons.durationpicker</groupId>
+    <groupId>dev.binarycodes.vaadin</groupId>
     <artifactId>duration-picker-root</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Duration Picker</name>
@@ -14,13 +14,6 @@
         <module>duration-picker</module>
         <module>duration-picker-demo</module>
     </modules>
-
-    <scm>
-        <url>https://github.com/sujoykd/duration-picker</url>
-        <connection>scm:git:https://github.com/sujoykd/duration-picker.git</connection>
-        <developerConnection>scm:git:https://github.com/sujoykd/duration-picker.git</developerConnection>
-        <tag>v@{project.version}</tag>
-    </scm>
 
     <build>
         <pluginManagement>

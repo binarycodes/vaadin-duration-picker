@@ -20,9 +20,9 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com:sujoykd/duration-picker.git</connection>
-        <developerConnection>scm:git:ssh://github.com:sujoykd/duration-picker.git</developerConnection>
-        <url>https://github.com/sujoykd/duration-picker</url>
+        <connection>scm:git:git://github.com:binarycodes/vaadin-duration-picker.git</connection>
+        <developerConnection>scm:git:ssh://github.com:binarycodes/vaadin-duration-picker.git</developerConnection>
+        <url>https://github.com/binarycodes/vaadin-duration-picker</url>
     </scm>
 
     <licenses>

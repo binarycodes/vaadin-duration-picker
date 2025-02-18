@@ -3,11 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.binarycodes.vaadin</groupId>
     <artifactId>duration-picker</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>duration-picker</name>
     <description>Vaadin duration picker component</description>
+    <url>https://github.com/binarycodes/vaadin-duration-picker</url>
 
     <developers>
         <developer>

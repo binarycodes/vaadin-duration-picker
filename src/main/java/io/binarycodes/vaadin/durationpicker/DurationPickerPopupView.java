@@ -1,4 +1,4 @@
-package org.vaadin.addons.durationpicker;
+package io.binarycodes.vaadin.durationpicker;
 
 
 import com.vaadin.flow.component.UI;

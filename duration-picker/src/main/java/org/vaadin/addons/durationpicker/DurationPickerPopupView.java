@@ -2,10 +2,12 @@ package org.vaadin.addons.durationpicker;
 
 
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.server.Command;
 import com.vaadin.flow.theme.lumo.LumoUtility;
 
 @CssImport("./styles/duration-picker-popup-view.css")
@@ -18,7 +20,7 @@ public class DurationPickerPopupView extends FlexLayout {
     private final FlexLayout wrapper;
 
 
-    public DurationPickerPopupView(DurationData value, Configuration configuration) {
+    public DurationPickerPopupView(DurationData value, Configuration configuration, Command onCloseCommand) {
         this.configuration = configuration;
 
         this.binder = new Binder<>(DurationData.class);
@@ -27,6 +29,9 @@ public class DurationPickerPopupView extends FlexLayout {
         this.wrapper = new FlexLayout();
         this.wrapper.addClassNames(LumoUtility.Gap.MEDIUM);
         this.add(this.wrapper);
+        this.add(new Button(configuration.getClosePopupLabel(), event -> onCloseCommand.execute()));
+
+        this.addClassNames(LumoUtility.Gap.XSMALL, LumoUtility.FlexDirection.COLUMN);
 
         init();
         addClassNames(
@@ -89,13 +94,13 @@ public class DurationPickerPopupView extends FlexLayout {
                        field.dispatchEvent(new Event('mouseWheelDown'));
                     }
                 });
-
+                
                 field.startY = null;
-
+                
                 field.addEventListener('touchstart', function(e) {
                     field.startY = e.touches[0].clientY;
                 }, false);
-
+                
                 field.addEventListener('touchmove', function(e) {
                     if (!field.startY) return;
                     let moveY = e.touches[0].clientY;

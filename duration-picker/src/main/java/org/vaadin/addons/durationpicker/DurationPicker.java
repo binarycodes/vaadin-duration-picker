@@ -5,11 +5,11 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.UUID;
 
-import com.vaadin.componentfactory.Popup;
-import com.vaadin.componentfactory.PopupPosition;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.popover.Popover;
+import com.vaadin.flow.component.popover.PopoverPosition;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.shared.Registration;
 
@@ -19,7 +19,7 @@ public class DurationPicker extends CustomField<Duration> {
     private final Configuration configuration;
 
     private final String textFieldId;
-    private final Popup popup;
+    private final Popover popup;
     private Registration popupCloseRegistration;
 
     /* the eventual value of this field */
@@ -28,12 +28,12 @@ public class DurationPicker extends CustomField<Duration> {
     private TextField field;
     private Button popupButton;
 
-    public DurationPicker() {
-        this(new Configuration(Arrays.asList(DurationUnit.values())));
+    public DurationPicker(String fieldLabel, String closeButtonLabel) {
+        this(new Configuration(fieldLabel, closeButtonLabel, Arrays.asList(DurationUnit.values())));
     }
 
-    public DurationPicker(final DurationUnit... units) {
-        this(new Configuration(Arrays.asList(units)));
+    public DurationPicker(String fieldLabel, String closeButtonLabel, final DurationUnit... units) {
+        this(new Configuration(fieldLabel, closeButtonLabel, Arrays.asList(units)));
     }
 
     private DurationPicker(final Configuration configuration) {
@@ -42,17 +42,17 @@ public class DurationPicker extends CustomField<Duration> {
         this.value = new DurationData(configuration);
         this.textFieldId = UUID.randomUUID().toString();
 
-        this.popup = new Popup();
+        this.popup = new Popover();
         this.popup.setFor(textFieldId);
-        this.popup.setPosition(PopupPosition.BOTTOM);
-        this.popup.setIgnoreTargetClick(true);
+        this.popup.setPosition(PopoverPosition.BOTTOM);
+        this.popup.setOpenOnClick(false);
         this.add(popup);
 
         initView();
     }
 
     private void initView() {
-        this.field = new TextField("Duration");
+        this.field = new TextField(configuration.getFieldLabel());
         this.field.setId(textFieldId);
 
         this.field.setAllowedCharPattern("[0-9hdms]");
@@ -71,23 +71,23 @@ public class DurationPicker extends CustomField<Duration> {
             }
         });
 
-        this.popupButton = new Button(VaadinIcon.CLOCK.create(), clickEvent -> onPopupOpen(field));
+        this.popupButton = new Button(VaadinIcon.CLOCK.create(), clickEvent -> showDurationPickerPopup(field));
         this.field.setSuffixComponent(this.popupButton);
 
         add(field);
     }
 
-    private void onPopupOpen(TextField field) {
+    private void showDurationPickerPopup(TextField field) {
         this.popup.removeAll();
         if (this.popupCloseRegistration != null) {
             this.popupCloseRegistration.remove();
         }
 
-        var dialog = new DurationPickerPopupView(value, configuration);
+        var dialog = new DurationPickerPopupView(value, configuration, this.popup::close);
         this.popup.add(dialog);
-        this.popup.show();
+        this.popup.open();
 
-        this.popupCloseRegistration = popup.addPopupOpenChangedEventListener(event -> {
+        this.popupCloseRegistration = popup.addOpenedChangeListener(event -> {
             field.setValue(dialog.getValue().toString());
             updateValue();
         });
@@ -134,6 +134,16 @@ public class DurationPicker extends CustomField<Duration> {
 
         public Builder() {
             configuration = new Configuration();
+        }
+
+        public Builder fieldLabel(String fieldLabel) {
+            this.configuration.setFieldLabel(fieldLabel);
+            return this;
+        }
+
+        public Builder closePopupLabel(String closePopupLabel) {
+            this.configuration.setClosePopupLabel(closePopupLabel);
+            return this;
         }
 
         public Builder days() {

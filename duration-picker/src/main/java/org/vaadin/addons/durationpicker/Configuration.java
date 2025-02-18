@@ -6,6 +6,9 @@ import java.util.List;
 public class Configuration {
     private static final int DEFAULT_STEP_VALUE = 1;
 
+    private String fieldLabel;
+    private String closePopupLabel;
+
     private final List<DurationUnit> units;
     private int hoursStepValue;
     private int minutesStepValue;
@@ -16,11 +19,14 @@ public class Configuration {
     private String minutesLabel;
     private String secondsLabel;
 
-    public Configuration() {
+    Configuration() {
         units = new ArrayList<>();
         hoursStepValue = DEFAULT_STEP_VALUE;
         minutesStepValue = DEFAULT_STEP_VALUE;
         secondsStepValue = DEFAULT_STEP_VALUE;
+
+        fieldLabel = "Duration";
+        closePopupLabel = "Ok";
 
         daysLabel = "d";
         hoursLabel = "h";
@@ -28,9 +34,27 @@ public class Configuration {
         secondsLabel = "s";
     }
 
-    public Configuration(List<DurationUnit> units) {
+    public Configuration(String fieldLabel, String closePopupLabel, List<DurationUnit> units) {
         this();
+        this.fieldLabel = fieldLabel;
+        this.closePopupLabel = closePopupLabel;
         this.units.addAll(units);
+    }
+
+    public String getFieldLabel() {
+        return fieldLabel;
+    }
+
+    public void setFieldLabel(String fieldLabel) {
+        this.fieldLabel = fieldLabel;
+    }
+
+    public String getClosePopupLabel() {
+        return closePopupLabel;
+    }
+
+    public void setClosePopupLabel(String closePopupLabel) {
+        this.closePopupLabel = closePopupLabel;
     }
 
     public void addUnit(DurationUnit durationUnit) {

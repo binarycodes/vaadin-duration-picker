@@ -3,6 +3,7 @@ package org.vaadin.addons.durationpicker.views;
 import java.util.stream.Stream;
 
 import org.vaadin.addons.durationpicker.DurationPicker;
+import org.vaadin.addons.durationpicker.DurationUnit;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
@@ -20,6 +21,9 @@ import com.vaadin.flow.router.RouterLayout;
 public class DurationPickerView extends VerticalLayout implements RouterLayout {
 
     public DurationPickerView() {
+        var fieldLabel = "Duration";
+        var closeButtonLabel = "Ok";
+
         var readOnlyPicker = new DurationPicker.Builder().hours(2).minutes(10).seconds(30).customLabels("D", "H", "M", "S").build();
         readOnlyPicker.setReadOnly(true);
 
@@ -27,8 +31,9 @@ public class DurationPickerView extends VerticalLayout implements RouterLayout {
         disabledPicker.setEnabled(false);
 
         Stream.of(
-                new DurationPicker(),
-                new DurationPicker.Builder().hours().minutes().seconds().build(),
+                new DurationPicker(fieldLabel, closeButtonLabel),
+                new DurationPicker(fieldLabel, closeButtonLabel, DurationUnit.HOURS, DurationUnit.MINUTES),
+                new DurationPicker.Builder().hours().minutes().seconds().fieldLabel("How long ?").closePopupLabel("Done").build(),
                 new DurationPicker.Builder().hours(2).minutes(10).seconds(30).customLabels("D", "H", "M", "S").build(),
                 readOnlyPicker,
                 disabledPicker

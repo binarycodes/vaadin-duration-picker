@@ -3,8 +3,6 @@ package io.binarycodes.vaadin.durationpicker;
 import java.time.Duration;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class DurationData {
 
     /* patterns for the manual input */
@@ -36,11 +34,11 @@ public class DurationData {
         this(configuration);
         this.valid = true;
 
-        if (StringUtils.isBlank(durationString)) {
+        if (Util.isBlank(durationString)) {
             return;
         }
 
-        var matcher = DURATION_PATTERN.matcher(durationString);
+        final var matcher = DURATION_PATTERN.matcher(durationString);
         if (!matcher.matches()) {
             return;
         }
@@ -59,15 +57,15 @@ public class DurationData {
 
     private int stepValueForUnit(DurationUnit unit) {
         return switch (unit) {
-            case DAYS -> configuration.getDaysStepValue();
-            case HOURS -> configuration.getHoursStepValue();
-            case MINUTES -> configuration.getMinutesStepValue();
-            case SECONDS -> configuration.getSecondsStepValue();
+            case DAYS -> this.configuration.getDaysStepValue();
+            case HOURS -> this.configuration.getHoursStepValue();
+            case MINUTES -> this.configuration.getMinutesStepValue();
+            case SECONDS -> this.configuration.getSecondsStepValue();
         };
     }
 
     private boolean isUnitExpected(DurationUnit unit) {
-        return configuration.getUnits().contains(unit);
+        return this.configuration.getUnits().contains(unit);
     }
 
     private ProcessLocalData processMatchedGroup(ProcessLocalData processData,
@@ -86,12 +84,12 @@ public class DurationData {
             return processData;
         }
 
-        var stepValue = stepValueForUnit(unit);
+        final var stepValue = stepValueForUnit(unit);
 
-        var value = Long.parseLong(matchedValue);
-        var mod = value % stepValue;
-        var valueToBeRounded = mod != 0;
-        var finalValue = valueToBeRounded ? value + (stepValue - mod) : value;
+        final var value = Long.parseLong(matchedValue);
+        final var mod = value % stepValue;
+        final var valueToBeRounded = mod != 0;
+        final var finalValue = valueToBeRounded ? value + (stepValue - mod) : value;
         unit.getValueConsumer().accept(this, finalValue);
 
         if (!processData.allowUnlimited() && finalValue > unit.getMax()) {
@@ -109,11 +107,11 @@ public class DurationData {
     }
 
     public Duration getDuration() {
-        return Duration.ofDays(days).plusHours(hours).plusMinutes(minutes).plusSeconds(seconds);
+        return Duration.ofDays(this.days).plusHours(this.hours).plusMinutes(this.minutes).plusSeconds(this.seconds);
     }
 
     public long getDays() {
-        return days;
+        return this.days;
     }
 
     public void setDays(long days) {
@@ -121,7 +119,7 @@ public class DurationData {
     }
 
     public long getHours() {
-        return hours;
+        return this.hours;
     }
 
     public void setHours(long hours) {
@@ -129,7 +127,7 @@ public class DurationData {
     }
 
     public long getMinutes() {
-        return minutes;
+        return this.minutes;
     }
 
     public void setMinutes(long minutes) {
@@ -137,7 +135,7 @@ public class DurationData {
     }
 
     public long getSeconds() {
-        return seconds;
+        return this.seconds;
     }
 
     public void setSeconds(long seconds) {
@@ -145,37 +143,37 @@ public class DurationData {
     }
 
     public boolean isValid() {
-        return valid;
+        return this.valid;
     }
 
     @Override
     public String toString() {
-        var builder = new StringBuilder();
-        if (days > 0) {
+        final var builder = new StringBuilder();
+        if (this.days > 0) {
             /* handle rollover from hours */
             if (isUnitExpected(DurationUnit.DAYS)) {
                 builder.append("%dd".formatted(this.days));
             } else {
-                hours = hours + Duration.ofDays(days).toHours();
+                this.hours = this.hours + Duration.ofDays(this.days).toHours();
             }
         }
-        if (hours > 0) {
+        if (this.hours > 0) {
             /* handle rollover from minutes */
             if (isUnitExpected(DurationUnit.HOURS)) {
                 builder.append("%dh".formatted(this.hours));
             } else {
-                minutes = minutes + Duration.ofHours(hours).toMinutes();
+                this.minutes = this.minutes + Duration.ofHours(this.hours).toMinutes();
             }
         }
-        if (minutes > 0) {
+        if (this.minutes > 0) {
             /* handle rollover from seconds */
             if (isUnitExpected(DurationUnit.MINUTES)) {
                 builder.append("%dm".formatted(this.minutes));
             } else {
-                seconds = seconds + Duration.ofMinutes(minutes).toSeconds();
+                this.seconds = this.seconds + Duration.ofMinutes(this.minutes).toSeconds();
             }
         }
-        if (seconds > 0) {
+        if (this.seconds > 0) {
             builder.append("%ds".formatted(this.seconds));
         }
         return builder.toString();

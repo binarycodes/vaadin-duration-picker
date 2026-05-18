@@ -27,3 +27,4 @@
 /frontend/
 /generated/*.log
 /*.lock
+/src/main/frontend/index.html

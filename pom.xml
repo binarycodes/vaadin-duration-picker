@@ -50,6 +50,13 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- Align jackson-databind with the jackson-core pulled in by Vaadin
+                 (browserless-test-shared otherwise drags in an older 3.0.x). -->
+            <dependency>
+                <groupId>tools.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>3.1.2</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -58,6 +65,11 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-core</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>browserless-test-junit6</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
